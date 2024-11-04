@@ -1,0 +1,33 @@
+{
+  "name": "scrapi",
+  "version": "0.0.1",
+  "description": "Scape websites LLM ready",
+  "main": "index.js",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "prod": "turbo run prod",
+    "format": "turbo run format",
+    "lint": "turbo run lint",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/himasnhu-at/scrapi.git"
+  },
+  "keywords": [
+    "llm",
+    "scrape",
+    "data"
+  ],
+  "packageManager": "pnpm@9.11.0",
+  "author": "Himanshu-at",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/himasnhu-at/scrapi/issues"
+  },
+  "homepage": "https://github.com/himasnhu-at/scrapi#readme",
+  "devDependencies": {
+    "turbo": "^2.2.3"
+  }
+}
