@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "build": "turbo run build",
+    "build:backend": "turbo run build --filter=@scrapi/backend",
+    "build:frontend": "turbo run build --filter=@scrapi/www",
     "dev": "turbo run dev",
+    "dev:backend": "turbo run dev --filter=@scrapi/backend",
+    "dev:frontend": "turbo run dev --filter=@scrapi/www",
     "prod": "turbo run prod",
+    "prod:backend": "turbo run prod --filter=@scrapi/backend",
+    "prod:frontend": "turbo run prod --filter=@scrapi/www",
     "format": "turbo run format",
     "lint": "turbo run lint",
     "test": "jest"
