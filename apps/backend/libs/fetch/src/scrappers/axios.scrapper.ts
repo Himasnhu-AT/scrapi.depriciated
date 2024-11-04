@@ -1,4 +1,4 @@
-import { LoggerSerivce } from '@app/global';
+import { Logger } from '@app/global';
 import { Injectable, MethodNotAllowedException } from '@nestjs/common';
 import axios from 'axios';
 
@@ -38,7 +38,7 @@ export class FetchScrapperService {
       });
 
       if (!allowed_status_codes.includes(response.status)) {
-        LoggerSerivce.debug(
+        Logger.debug(
           `Axios: Failed to fetch url: ${url} with status: ${response.status}`,
         );
         logParams.error_message = response.statusText;
@@ -80,12 +80,10 @@ export class FetchScrapperService {
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
         logParams.error_message = 'Request timed out';
-        LoggerSerivce.debug(`⛏️ Axios: Request timed out for ${url}`);
+        Logger.debug(`⛏️ Axios: Request timed out for ${url}`);
       } else {
         logParams.error_message = error.message || error;
-        LoggerSerivce.debug(
-          `Axios: Failed to fetch url: ${url} | Error: ${error}`,
-        );
+        Logger.debug(`Axios: Failed to fetch url: ${url} | Error: ${error}`);
       }
       return {
         content: '',

@@ -1,21 +1,17 @@
-import { Logger as NestLogger } from '@nestjs/common';
-
-export class LoggerSerivce {
-  private static logger = new NestLogger('FetchService');
-
+export class Logger {
   static debug(message: string) {
-    this.logger.debug(message);
+    console.log(message);
   }
 
   static log(message: string) {
-    this.logger.log(message);
+    console.log(message);
   }
 
   static error(message: string, trace: string) {
-    this.logger.error(message, trace);
+    console.log(message, trace);
   }
 
   static warn(message: string) {
-    this.logger.warn(message);
+    console.log(message);
   }
 }
