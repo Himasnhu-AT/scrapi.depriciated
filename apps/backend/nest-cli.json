@@ -27,6 +27,24 @@
       "compilerOptions": {
         "tsConfigPath": "apps/scrapper/tsconfig.app.json"
       }
+    },
+    "fetch": {
+      "type": "library",
+      "root": "libs/fetch",
+      "entryFile": "index",
+      "sourceRoot": "libs/fetch/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/fetch/tsconfig.lib.json"
+      }
+    },
+    "global": {
+      "type": "library",
+      "root": "libs/global",
+      "entryFile": "index",
+      "sourceRoot": "libs/global/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/global/tsconfig.lib.json"
+      }
     }
   }
 }

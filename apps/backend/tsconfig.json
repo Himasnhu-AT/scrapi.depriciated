@@ -17,6 +17,19 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@app/fetch": [
+        "libs/fetch/src"
+      ],
+      "@app/fetch/*": [
+        "libs/fetch/src/*"
+      ],
+      "@app/global": [
+        "libs/global/src"
+      ],
+      "@app/global/*": [
+        "libs/global/src/*"
+      ]
+    }
   }
 }
