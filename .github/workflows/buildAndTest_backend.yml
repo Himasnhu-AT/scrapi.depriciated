@@ -1,0 +1,50 @@
+name: Build and Test Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "scrapi/apps/backend/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scrapi/apps/backend/**"
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        run: |
+          npm install -g pnpm
+          pnpm install
+          pnpm install -g prisma
+        working-directory: scrapi/apps/backend
+
+      # - name: Generate prisma types
+      #   run: pnpm prisma generate
+      #   working-directory: scrapi/apps/backend
+
+      - name: Build
+        run: pnpm pnpm
+        working-directory: scrapi/apps/backend
+
+      # - name: Run tests
+      #   run: npm test
+      #   working-directory: scrapi/apps/backend
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: backend
