@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - "scrapi/apps/www/**"
+      - "apps/www/**"
   pull_request:
     branches:
       - main
     paths:
-      - "scrapi/apps/www/**"
+      - "apps/www/**"
 
 jobs:
   build_and_test:
@@ -29,15 +29,15 @@ jobs:
         run: |
           npm install -g pnpm
           pnpm install
-        working-directory: scrapi/apps/www
+        working-directory: apps/www
 
       - name: Build
         run: pnpm pnpm
-        working-directory: scrapi/apps/www
+        working-directory: apps/www
 
       # - name: Run tests
       #   run: npm test
-      #   working-directory: scrapi/apps/www
+      #   working-directory: apps/www
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2

@@ -5,12 +5,13 @@ on:
     branches:
       - main
     paths:
-      - "scrapi/apps/backend/**"
+      - "apps/backend/**"
   pull_request:
     branches:
       - main
     paths:
-      - "scrapi/apps/backend/**"
+      - "apps/backend/**"
+  workflow_dispatch:
 
 jobs:
   build_and_test:
@@ -30,19 +31,19 @@ jobs:
           npm install -g pnpm
           pnpm install
           pnpm install -g prisma
-        working-directory: scrapi/apps/backend
+        working-directory: apps/backend
 
       # - name: Generate prisma types
       #   run: pnpm prisma generate
-      #   working-directory: scrapi/apps/backend
+      #   working-directory: apps/backend
 
       - name: Build
         run: pnpm pnpm
-        working-directory: scrapi/apps/backend
+        working-directory: apps/backend
 
-      # - name: Run tests
-      #   run: npm test
-      #   working-directory: scrapi/apps/backend
+      - name: Run tests
+        run: pnpm test
+        working-directory: apps/backend
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
