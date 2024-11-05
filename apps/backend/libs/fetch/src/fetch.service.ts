@@ -4,6 +4,7 @@ import { FetchScrapperService } from './scrappers/axios.scrapper';
 import * as cheerio from 'cheerio';
 import * as TurndownService from 'turndown';
 import { excludeNonMainTags } from '@app/global/excludedTags';
+import { FetchURLOptions } from '@scrapi/common';
 
 @Injectable()
 export class FetchService {
@@ -23,11 +24,7 @@ export class FetchService {
   }: {
     url: string;
     scrapper: 'axios';
-    options?: {
-      universalTimeout: number;
-      allowed_content_types: string[];
-      allowed_status_codes: number[];
-    };
+    options?: FetchURLOptions;
   }) {
     const pageOptions = options ?? this.globalVarsService.pageOptions();
 

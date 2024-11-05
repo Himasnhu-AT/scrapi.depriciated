@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { FetchURLOptions } from '@scrapi/common';
 
 @Injectable()
 export class GlobalVarsService {
@@ -14,11 +15,15 @@ export class GlobalVarsService {
     return [200];
   }
 
-  pageOptions() {
+  pageOptions(): FetchURLOptions {
     return {
       universalTimeout: this.universalTimeout(),
       allowed_content_types: this.allowedContentTypes(),
       allowed_status_codes: this.allowedStatusCodes(),
     };
+  }
+
+  scrapperName(): [string] {
+    return ['axios'];
   }
 }

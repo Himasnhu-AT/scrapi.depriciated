@@ -50,7 +50,7 @@
       "outputs": []
     },
     "test": {
-      "outputs": []
+      "outputs": ["^test"]
     },
     "format": {
       "outputs": []

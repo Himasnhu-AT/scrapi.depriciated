@@ -15,7 +15,7 @@
     "prod:frontend": "turbo run prod --filter=@scrapi/www",
     "format": "turbo run format",
     "lint": "turbo run lint",
-    "test": "jest"
+    "test": "turbo run test"
   },
   "repository": {
     "type": "git",

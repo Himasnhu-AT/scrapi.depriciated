@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ScrapperService } from './scrapper.service';
+import { ScrapeRequestDto } from './dto/scrape-request.dto';
 
 @Controller()
 export class ScrapperController {
@@ -10,8 +11,8 @@ export class ScrapperController {
     return this.scrapperService.getHello();
   }
 
-  @Get('scrape')
-  scrapeSingleWebsite() {
-    return this.scrapperService.scrapeSingleWebsite();
+  @Post('scrape')
+  scrapeSingleWebsite(@Body() body: ScrapeRequestDto) {
+    return this.scrapperService.scrapeSingleWebsite(body);
   }
 }

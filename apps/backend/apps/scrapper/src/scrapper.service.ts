@@ -1,7 +1,8 @@
 import { FetchService } from '@app/fetch/fetch.service';
 import { FetchScrapperService } from '@app/fetch/scrappers/axios.scrapper';
 import { GlobalVarsService } from '@app/global';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ScrapeRequestDto } from './dto/scrape-request.dto';
 
 @Injectable()
 export class ScrapperService {
@@ -14,15 +15,31 @@ export class ScrapperService {
     return 'Scapper service is working';
   }
 
-  async scrapeSingleWebsite() {
+  async scrapeSingleWebsite(body: ScrapeRequestDto) {
+    const url: string = body.url;
+
+    if (!url) {
+      throw new NotFoundException('URL is required');
+    }
+
+    if (!this.globalVarsService.scrapperName().includes(body.scrapperName)) {
+      throw new NotFoundException(
+        `allowed scrapers: ${this.globalVarsService.scrapperName()}`,
+      );
+    }
+
+    const pageOptions =
+      body.pageOptions ?? this.globalVarsService.pageOptions();
+
     const fetchService = new FetchService(
       this.globalVarsService,
       this.fetchScrapperService,
     );
     try {
       const result = await fetchService.FetchURL({
-        url: 'http://example.com',
+        url,
         scrapper: 'axios',
+        options: pageOptions,
       });
       console.log(result);
       return result;

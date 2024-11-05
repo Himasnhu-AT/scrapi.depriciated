@@ -1,0 +1,25 @@
+{
+  "name": "@scrapi/common",
+  "private": false,
+  "version": "0.0.1",
+  "description": "Scape websites LLM ready",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Himasnhu-at/scrapi.git"
+  },
+  "author": "Himanshu-at",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Himasnhu-at/scrapi/issues"
+  },
+  "homepage": "https://github.com/Himasnhu-at/scrapi#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.2",
+    "jest": "^29.5.0"
+  }
+}
