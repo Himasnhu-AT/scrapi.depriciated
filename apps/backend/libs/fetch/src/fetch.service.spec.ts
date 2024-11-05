@@ -4,7 +4,6 @@ import { GlobalVarsService } from '@app/global';
 import { FetchScrapperService } from './scrappers/axios.scrapper';
 import * as fs from 'fs';
 import * as path from 'path';
-import '../test/test.env';
 
 describe('FetchService', () => {
   let service: FetchService;

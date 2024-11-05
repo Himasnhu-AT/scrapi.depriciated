@@ -4,6 +4,7 @@
   "description": "Scape websites LLM ready",
   "main": "index.js",
   "scripts": {
+    "pre-commit": "pnpm format && pnpm lint && pnpm build && pnpm test",
     "build": "turbo run build",
     "build:backend": "turbo run build --filter=@scrapi/backend",
     "build:frontend": "turbo run build --filter=@scrapi/www",
