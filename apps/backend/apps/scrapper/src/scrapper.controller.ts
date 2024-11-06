@@ -15,4 +15,9 @@ export class ScrapperController {
   scrapeSingleWebsite(@Body() body: ScrapeRequestDto) {
     return this.scrapperService.scrapeSingleWebsite(body);
   }
+
+  @Post('scrape/domain')
+  scrapeDomain(@Body() body: ScrapeRequestDto) {
+    return this.scrapperService.scrapeDomain(body);
+  }
 }

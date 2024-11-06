@@ -48,4 +48,35 @@ export class ScrapperService {
       throw error;
     }
   }
+
+  async scrapeDomain(body: ScrapeRequestDto) {
+    const url: string = body.url;
+
+    if (!url) {
+      throw new NotFoundException('URL is required');
+    }
+
+    if (!this.globalVarsService.scrapperName().includes(body.scrapperName)) {
+      throw new NotFoundException(
+        `allowed scrapers: ${this.globalVarsService.scrapperName()}`,
+      );
+    }
+
+    const pageOptions =
+      body.pageOptions ?? this.globalVarsService.pageOptions();
+
+    const fetchService = new FetchService(
+      this.globalVarsService,
+      this.fetchScrapperService,
+    );
+
+    try {
+      const result = await fetchService.scrapeAllSites(url);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }

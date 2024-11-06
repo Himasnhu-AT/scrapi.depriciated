@@ -16,6 +16,8 @@ dotenv.config({ path: path.resolve(process.cwd(), './.env') });
 export class FetchService {
   private turndownService: TurndownService;
   private isTestEnvironment: boolean;
+  private visitedUrls = new Set<string>();
+  private readonly maxPages = 100; // Limit the number of pages to crawl
 
   constructor(
     private readonly globalVarsService: GlobalVarsService,
@@ -249,6 +251,152 @@ export class FetchService {
           content: cleanedMarkdown,
         };
     }
+  }
+
+  private isValidUrl(url: string, domain: string): boolean {
+    try {
+      const urlObj = new URL(url);
+      const domainObj = new URL(domain);
+      return urlObj.hostname === domainObj.hostname;
+    } catch {
+      return false;
+    }
+  }
+
+  private extractUrls(content: string, baseUrl: string): string[] {
+    const $ = cheerio.load(content);
+    const urls = new Set<string>();
+
+    $('a[href]').each((_, element) => {
+      const href = $(element).attr('href');
+      try {
+        const absoluteUrl = new URL(href, baseUrl).toString();
+        if (this.isValidUrl(absoluteUrl, baseUrl)) {
+          urls.add(absoluteUrl);
+        }
+      } catch {
+        // Invalid URL, skip
+      }
+    });
+
+    return Array.from(urls);
+  }
+
+  async scrapeAllSites(
+    domain: string,
+  ): Promise<Array<{ url: string; content: string; metadata?: any }>> {
+    try {
+      // First try sitemap
+      try {
+        const sitemapUrl = `${domain}/sitemap.xml`;
+        const sitemapResponse =
+          await this.fetchScrapperService.fetchURLWithAxios(
+            sitemapUrl,
+            this.globalVarsService.pageOptions().universalTimeout,
+            ['application/xml', 'text/xml'],
+            [200],
+          );
+
+        // If sitemap exists, use it
+        const $ = cheerio.load(sitemapResponse.content, { xmlMode: true });
+        const urls = $('url loc')
+          .map((_, element) => $(element).text())
+          .get();
+
+        if (urls.length > 0) {
+          return this.scrapeUrls(urls);
+        }
+      } catch {
+        console.log('No sitemap found, falling back to crawling');
+      }
+
+      // Fall back to crawling
+      return this.crawlSite(domain);
+    } catch (error) {
+      console.error('Error scraping site:', error);
+      throw new Error(
+        `Failed to scrape sites from ${domain}: ${error.message}`,
+      );
+    }
+  }
+
+  private async crawlSite(
+    startUrl: string,
+  ): Promise<Array<{ url: string; content: string; metadata?: any }>> {
+    const results: Array<{ url: string; content: string; metadata?: any }> = [];
+    const urlsToVisit: string[] = [startUrl];
+
+    while (urlsToVisit.length > 0 && this.visitedUrls.size < this.maxPages) {
+      const currentUrl = urlsToVisit.shift()!;
+
+      if (this.visitedUrls.has(currentUrl)) {
+        continue;
+      }
+
+      this.visitedUrls.add(currentUrl);
+
+      try {
+        const result = await this.FetchURL({
+          url: currentUrl,
+          scrapper: 'axios',
+        });
+
+        results.push({
+          url: currentUrl,
+          content: result.content,
+          metadata: {
+            statusCode: result.pageStatusCode,
+            contentType: result.content.substring(0, 100), // Fallback since contentType not available
+            timestamp: new Date().toISOString(),
+          },
+        });
+
+        // Extract and add new URLs to visit
+        const newUrls = this.extractUrls(result.content, startUrl).filter(
+          (url) => !this.visitedUrls.has(url),
+        );
+        urlsToVisit.push(...newUrls);
+      } catch (error) {
+        console.error(`Error crawling ${currentUrl}:`, error);
+      }
+    }
+
+    return results;
+  }
+
+  private async scrapeUrls(
+    urls: string[],
+  ): Promise<Array<{ url: string; content: string; metadata?: any }>> {
+    return Promise.all(
+      urls.map(async (url) => {
+        try {
+          const result = await this.FetchURL({
+            url,
+            scrapper: 'axios',
+          });
+
+          return {
+            url,
+            content: result.content,
+            metadata: {
+              statusCode: result.pageStatusCode,
+              contentType: result.content.substring(0, 100), // Fallback since contentType not available
+              timestamp: new Date().toISOString(),
+            },
+          };
+        } catch (error) {
+          console.error(`Error scraping ${url}:`, error);
+          return {
+            url,
+            content: '',
+            metadata: {
+              error: error.message,
+              timestamp: new Date().toISOString(),
+            },
+          };
+        }
+      }),
+    );
   }
 
   // private cleanupHtml($: cheerio.CheerioAPI) {
