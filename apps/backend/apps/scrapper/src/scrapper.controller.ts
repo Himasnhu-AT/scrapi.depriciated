@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ScrapperService } from './scrapper.service';
-import { ScrapeRequestDto } from './dto/scrape-request.dto';
+import { ScrapeDocsDomain, ScrapeRequestDto } from './dto/scrape-request.dto';
 
 @Controller()
 export class ScrapperController {
@@ -19,5 +19,10 @@ export class ScrapperController {
   @Post('scrape/domain')
   scrapeDomain(@Body() body: ScrapeRequestDto) {
     return this.scrapperService.scrapeDomain(body);
+  }
+
+  @Post('scrape/docs')
+  scrapeAllSites(@Body() body: ScrapeDocsDomain[]) {
+    return this.scrapperService.scrapeAllSites(body);
   }
 }

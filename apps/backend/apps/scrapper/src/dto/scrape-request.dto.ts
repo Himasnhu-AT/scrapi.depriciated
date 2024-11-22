@@ -5,3 +5,11 @@ export class ScrapeRequestDto {
   scrapperName: string;
   pageOptions?: FetchURLOptions;
 }
+
+export class ScrapeDocsDomain {
+  name: string;
+  crawlerStart: string;
+  crawlerPrefix: string;
+  scrapperName: string;
+  pageOptions?: FetchURLOptions;
+}

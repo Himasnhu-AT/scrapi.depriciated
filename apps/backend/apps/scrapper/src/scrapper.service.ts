@@ -79,4 +79,8 @@ export class ScrapperService {
       throw error;
     }
   }
+
+  scrapeAllSites(body: import('./dto/scrape-request.dto').ScrapeDocsDomain[]) {
+    throw new Error('Method not implemented.');
+  }
 }
