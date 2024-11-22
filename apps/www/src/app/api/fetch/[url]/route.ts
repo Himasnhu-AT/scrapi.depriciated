@@ -4,7 +4,7 @@ import { FetchScrapperService } from "@/server/fetch/scrappers/axios";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  if (request.method !== "GET") {
+  if (request.method !== "POST") {
     return NextResponse.json(
       { message: "Method not allowed" },
       { status: 405 },
